@@ -1,0 +1,24 @@
+name: Probe worker
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Cross-vantage smoke test
+        run: |
+          BASE="https://cfip-regions.1915818266w.workers.dev"
+          echo "--- GET / (expect 200 cfip-regions worker: OK) ---"
+          curl -sS -m 20 -o /tmp/root_body -w "HTTP %{http_code}\n" "$BASE/" || true
+          head -c 200 /tmp/root_body; echo
+          echo "--- GET /sub/wrong (expect 404) ---"
+          curl -sS -m 20 -o /tmp/wrong_body -w "HTTP %{http_code}\n" "$BASE/sub/wrong-token" || true
+          head -c 120 /tmp/wrong_body; echo
+          echo "--- raw trace of an anycast entry (context) ---"
+          curl -sS -m 20 "https://1.1.1.1/cdn-cgi/trace" | head -5 || true
