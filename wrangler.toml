@@ -14,7 +14,7 @@ compatibility_date = "2024-11-01"
 
 # Non-secret, non-personal defaults. DATA_BASE_URL must point at YOUR fork's raw URL.
 [vars]
-DATA_BASE_URL = "https://raw.githubusercontent.com/YOUR_USERNAME/cfip-regions/main/data"
+DATA_BASE_URL = "https://raw.githubusercontent.com/1915818266w-source/miucf1/main/data"
 CONNECT_TIMEOUT_MS = "10000"
 IDLE_TIMEOUT_MS = "120000"
 
