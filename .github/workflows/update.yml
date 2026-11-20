@@ -51,7 +51,7 @@ jobs:
           import json, pathlib
           p = pathlib.Path("data/audit.json")
           if not p.exists():
-              print("NO AUDIT — pipeline did not complete"); raise SystemExit
+              print("NO AUDIT — pipeline did not complete"); raise SystemExit(1)
           d = json.loads(p.read_text())
           st = d["stats"]
           print(f"probed={st['probed']} reachable_colo={st['reachable_colo']} region_matched={st['region_matched']}")
