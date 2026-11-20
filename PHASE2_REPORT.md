@@ -1,7 +1,7 @@
 # 第二阶段交付报告 — cfip-regions
 
-工程目录：`/root/workspace/cfip-regions/`
-参考审查（只读、零改动）：`/root/workspace/review/CloudflareIP/`
+工程目录：`<workspace>/cfip-regions/`
+参考审查（只读、零改动）：`<workspace>/review/CloudflareIP/`
 版权立场：参考项目无 LICENSE，本工程为 clean-room 独立实现，未复制其任何代码；`worker.js`/`index.html`/`py/*.py` 均为独立重写。授权阻塞项：无。
 
 ---

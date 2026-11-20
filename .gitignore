@@ -5,3 +5,8 @@ node_modules/
 /tmp/
 __pycache__/
 *.pyc
+
+# 本地审计原始记录（默认不上传）
+/PHASE3B2B_REPORT.md
+/PHASE3B2B1_AUDIT.md
+/PHASE3B2B2_REPORT.md

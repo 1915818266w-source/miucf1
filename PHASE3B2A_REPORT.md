@@ -1,6 +1,6 @@
 # 第三阶段 B-2A 报告 — 正式数据仓库准备与 DATA_BASE_URL 配置方案
 
-工程：`/root/workspace/cfip-regions/` ｜ 性质：只读调查 + 方案设计 + 文档（零代码修改、零远程操作）
+工程：`<workspace>/cfip-regions/` ｜ 性质：只读调查 + 方案设计 + 文档（零代码修改、零远程操作）
 本阶段未创建任何 GitHub 仓库、未登录任何账号、未写入任何真实密钥。
 
 ---
@@ -140,7 +140,7 @@ cfip-regions-data/                 ← 额外创建的 Public 仓库（仅数据
 ### 4.3 推送工程内容
 
 ```bash
-cd /root/workspace/cfip-regions
+cd <workspace>/cfip-regions
 git init -b main && git add -A && git commit -m "cfip-regions: worker + pipeline + region data"
 git remote add origin https://github.com/<你的用户名>/cfip-regions.git
 git push -u origin main        # 推送时按提示完成 GitHub 认证（人工操作）
