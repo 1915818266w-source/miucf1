@@ -1,0 +1,5 @@
+# Local fixture CIDR ranges for offline pipeline testing (RFC 3849 / RFC 5737 documentation ranges plus a real CF range sample).
+# Used ONLY with --ranges-file in tests; production uses https://www.cloudflare.com/ips-v4
+104.16.0.0/24
+104.16.1.0/24
+172.64.0.0/24

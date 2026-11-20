@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: cfip-regions-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-fund --no-audit
+      - name: Unit tests (level B)
+        run: node --test "test/*.test.mjs"
+
+  pipeline-selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pipeline offline self-test (fixture ranges, no external writes)
+        run: |
+          python3 pipeline/update_data.py \
+            --ranges-file pipeline/sources_fixture.txt \
+            --data-dir /tmp/selftest-data \
+            --probe-limit 4 --timeout 4 --workers 4
+          test -f /tmp/selftest-data/audit.json
+          echo "pipeline self-test OK"
+
+  pipeline-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pipeline regression suite (G-1/G-2, deterministic, no network)
+        run: python3 pipeline/test_update_data.py
+
+  lint-worker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-fund --no-audit
+      - name: Syntax check all worker sources (level A)
+        run: node --check src/index.mjs && node --check src/vless.mjs && node --check src/config.mjs && node --check src/session.mjs && node --check src/sub.mjs && node --check src/data.mjs
+      - name: Wrangler dry-run (config validation, no deploy)
+        run: npx wrangler deploy --dry-run --outdir /tmp/wrangler-dry

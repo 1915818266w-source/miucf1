@@ -1,0 +1,26 @@
+# wrangler.toml — Cloudflare Workers deployment (workers.dev only; Pages is out of scope).
+#
+# SECURITY: this file contains NO secrets. All sensitive values are injected as
+# Secrets (wrangler secret put / dashboard), never stored in the repository.
+# Generate per-deployment values:
+#   VLESS_UUID : uuidgen (lowercase)
+#   WS_PATH    : /<random-16+-chars>   e.g. /t-$(openssl rand -hex 8)
+#   SUB_TOKEN  : $(openssl rand -hex 16)
+#   PROXY_IPS  : optional comma-separated fallback relays, only if you operate them
+
+name = "cfip-regions"
+main = "src/index.mjs"
+compatibility_date = "2024-11-01"
+
+# Non-secret, non-personal defaults. DATA_BASE_URL must point at YOUR fork's raw URL.
+[vars]
+DATA_BASE_URL = "https://raw.githubusercontent.com/YOUR_USERNAME/cfip-regions/main/data"
+CONNECT_TIMEOUT_MS = "10000"
+IDLE_TIMEOUT_MS = "120000"
+
+# Secrets (set via `wrangler secret put <NAME>`):
+#   VLESS_UUID      — per-deployment UUID, never committed
+#   WS_PATH         — fixed secret WebSocket path, never committed
+#   SUB_TOKEN       — subscription credential, never committed
+#   WORKER_URL      — optional, https://<name>.<account>.workers.dev (self-known; may be set as var)
+#   PROXY_IPS       — optional fallback relay list

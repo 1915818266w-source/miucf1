@@ -1,0 +1,59 @@
+{
+  "_comment": "Candidate IP sources per region. Every source must yield IPs whose Cloudflare colo can be verified via /cdn-cgi/trace; the pipeline records colo as evidence and marks unverifiable entries UNKNOWN (never published).",
+  "_colo_airport_codes": {
+    "hk": ["HKG"],
+    "jp": ["NRT", "KIX", "FUK"],
+    "sg": ["SIN"],
+    "us": ["LAX", "SJC", "SEA", "ORD", "DFW", "IAD", "MIA", "EWR"],
+    "de": ["FRA"],
+    "nl": ["AMS"]
+  },
+  "regions": {
+    "hk": {
+      "sources": [
+        {
+          "type": "cidr_file",
+          "name": "cloudflare-official-ipv4",
+          "url": "https://www.cloudflare.com/ips-v4",
+          "enabled": true
+        },
+        {
+          "type": "trace_probe",
+          "name": "colo-probe-over-official-ranges",
+          "enabled": true,
+          "note": "Probes sample IPs from the official ranges and keeps only those whose trace colo matches HKG. If none match, HK stays empty and is reported MISSING — no fabrication."
+        }
+      ]
+    },
+    "jp": {
+      "sources": [
+        { "type": "cidr_file", "name": "cloudflare-official-ipv4", "url": "https://www.cloudflare.com/ips-v4", "enabled": true },
+        { "type": "trace_probe", "name": "colo-probe-over-official-ranges", "enabled": true }
+      ]
+    },
+    "sg": {
+      "sources": [
+        { "type": "cidr_file", "name": "cloudflare-official-ipv4", "url": "https://www.cloudflare.com/ips-v4", "enabled": true },
+        { "type": "trace_probe", "name": "colo-probe-over-official-ranges", "enabled": true }
+      ]
+    },
+    "us": {
+      "sources": [
+        { "type": "cidr_file", "name": "cloudflare-official-ipv4", "url": "https://www.cloudflare.com/ips-v4", "enabled": true },
+        { "type": "trace_probe", "name": "colo-probe-over-official-ranges", "enabled": true }
+      ]
+    },
+    "de": {
+      "sources": [
+        { "type": "cidr_file", "name": "cloudflare-official-ipv4", "url": "https://www.cloudflare.com/ips-v4", "enabled": true },
+        { "type": "trace_probe", "name": "colo-probe-over-official-ranges", "enabled": true }
+      ]
+    },
+    "nl": {
+      "sources": [
+        { "type": "cidr_file", "name": "cloudflare-official-ipv4", "url": "https://www.cloudflare.com/ips-v4", "enabled": true },
+        { "type": "trace_probe", "name": "colo-probe-over-official-ranges", "enabled": true }
+      ]
+    }
+  }
+}
