@@ -296,6 +296,15 @@ def merge_rows(prev_rows: list, probes: list, timeout: float, workers: int) -> d
 
     for region in REGIONS:
         merged[region].sort(key=lambda r: r["ip"])
+
+    # observability: record the observed colo distribution so a vantage-point
+    # mismatch (probe sees colos outside COLO_MAP) is diagnosable from the log
+    from collections import Counter
+    colo_dist = Counter(pr.get("colo", "") for pr in results.values() if pr.get("ok"))
+    stats["colo_distribution"] = dict(colo_dist.most_common(10))
+    if stats["region_matched"] == 0:
+        log(f"colo distribution observed: {dict(colo_dist.most_common(10))}")
+
     return {"rows": merged, "unknown": unknown_rows, "stats": stats}
 
 
@@ -402,7 +411,9 @@ def main(argv=None) -> int:
                  f"({merged['stats']['stale_kept']} rows, original last_checked preserved)")
         rc = 1
     elif merged["stats"]["region_matched"] == 0:
-        gh_error("no candidate matched any region colo; data files unchanged or empty")
+        dist = merged["stats"].get("colo_distribution", {})
+        gh_error(f"no candidate matched any region colo; data files unchanged or empty; "
+                 f"observed colos: {dist}")
         rc = 1
     empty = [r for r in REGIONS if not merged["rows"][r]]
     if empty:
